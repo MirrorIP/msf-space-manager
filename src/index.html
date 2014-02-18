@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>MIRROR Space Manager</title>
+		<link rel="stylesheet" href="css/style.subtle.css" type="text/css" media="screen" title="Stylesheet" />
+		<script type="text/javascript" src="settings.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery.bpopup.min.js"></script>
+		<script type="text/javascript" src="js/jquery.activity-indicator-1.0.0.min.js"></script>
+		<script type="text/javascript" src="js/handlebars.js"></script>
+		<script type="text/javascript" src="js/strophe.min.js"></script>
+		<script type="text/javascript" src="js/strophe.x.js"></script>
+		<script type="text/javascript" src="js/strophe.register.js"></script>
+		<script type="text/javascript" src="js/strophe.vcard.js"></script>
+		<script type="text/javascript" src="js/strophe.disco.js"></script>
+		<script type="text/javascript" src="js/strophe.pubsub.js"></script>
+		<script type="text/javascript" src="js/strophe.spaces.js"></script>
+		<script type="text/javascript" src="js/spaces-sdk-javascript.min.js"></script>
+		<script type="text/javascript" src="js/main.min.js"></script>
+		<!--<script type="text/javascript" src="js/main.js"></script>-->
+	</head>
+	<body>
+		<div id="body">
+			<div id="header">
+				<h1>MIRROR Space Manager</h1>
+			</div>
+			<div id="loginPanel" class="panel">
+				<div class="panelHeader">Login</div>
+				<table>
+					<tr>
+						<td><div class="formLabel">User-ID:</div><input type="text" id="userNameInput" /></td>
+						<td><div class="formLabel">Domain:</div><input type="text" id="domainInput"/></td>
+						<!--td><div class="formLabel">Domain:</div><input type="text" id="domainInput" value="mirror-demo.eu" disabled="disabled"/></td-->
+					</tr>
+					<tr>
+						<td colspan="2"><div class="formLabel">Password:</div><input type="password" id="userPwdInput" /></td>
+					</tr>
+				</table> 	
+				<button type="button" id="loginButton">Login</button>
+				<button type="button" id="createUserButton">Create User</button>
+				
+			</div>
+			<div id="errorMessagePanel" class="panel errorMessage">
+				<table>
+					<colgroup>
+						<col width="100%">
+					</colgroup>
+					<tr>
+						<td id="errorMessageLabel">&nbsp;</td>
+						<td><button id="dismissErrorButton">Dismiss</button></td>
+					</tr>
+				</table>
+			</div>
+			<div id="successMessagePanel" class="panel successMessage">
+				<table>
+					<colgroup>
+						<col width="100%">
+					</colgroup>
+					<tr>
+						<td id="successMessageLabel">&nbsp;</td>
+						<td><button id="dismissSuccessButton">Dismiss</button></td>
+					</tr>
+				</table>
+			</div>
+			<div id="logoutPanel" class="panel leftPanel">
+				<div class="infoLabel">You are currently logged in as: <b><span id="userInfoLabel">&nbsp;</span></b></div>
+				<div class="buttonRow">
+					<button id="logoutButton">Logout</button>
+					<button id="showProfile">My profile</button>
+				</div>
+			</div>
+			<div id="privateSpacePanel" class="panel leftPanel">
+				<div class="panelHeader">Private Space</div>
+				<div id="privateSpaceInformation" class="infoLabel">n/a</div>
+				<div class="buttonRow">
+					<button type="button" id="privateSpaceDetailsButton">Details</button>
+				</div>
+			</div>
+			<div id="spaceSelectionPanel" class="panel leftPanel">
+				<div class="panelHeader">Shared Spaces</div>
+				<div class="formLabel">Select a space:</div>
+				<div id="noSharedSpacesInfo" class="infoLabel">No shared spaces available.</div>
+				<div id="sharedSpaceSelectionForm">
+					<select id="spaceSelectionDropdown"> </select><br>
+					<button id="selectSpaceButton">Select</button>
+				</div>
+				<div class="buttonRow">
+					<button id="refeshSpacesListButton">Refresh</button>
+					<button id="createSpaceButton">Create</button>
+				</div>
+			</div>
+			<div id="spaceInformationPanel" class="panel rightPanel">
+				<div class="panelHeader">Space Information</div>
+				<div id="spaceInformationTab" class="tab">
+					<ul class="tab">
+						<li><a href="#General" class="current">General</a></li>
+						<li><a href="#Members" class="excludesPrivateSpace">Members</a></li>
+						<li><a href="#DataModels" class="excludesPrivateSpace excludesTeamSpace">Data Models</a></li>
+						<li><a href="#Data" class="excludesNotImplemented">Data</a></li>
+						<li><a href="#Operations" class="excludesRoleMember">Operations</a></li>
+					</ul>
+					<div id="spaceInformationTabGeneral">
+						<table>
+							<colgroup>
+								<col width="100%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td>
+										<div class="formLabel">ID:</div>
+										<div id="selectedSpaceId" class="infoLabel">&nbsp;</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="formLabel">Name:</div>
+										<div id="selectedSpaceName" class="infoLabel">&nbsp;</div>
+									</td>
+									<td>
+										<button id="setSpaceNameButton" class="excludesRoleMember">Change</button>
+										<div id="spaceNameInputPopup" class="popup">
+											<div class="formLabel">New name:</div>
+											<input type="text" id="spaceNameInputField">
+											<div class="buttonRow">
+												<button id="spaceNameInputCancelButton">Cancel</button>
+												<button id="spaceNameInputSubmitButton">Submit</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="formLabel">Type:</div>
+										<div id="selectedSpaceType" class="infoLabel">&nbsp;</div>
+									</td>
+								</tr>
+								<tr class="excludesPrivateSpace">
+									<td>
+										<div class="formLabel">Members:</div>
+										<div id="selectedSpaceMembersCount" class="infoLabel">&nbsp;</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="formLabel">Persistence:</div>
+										<div id="selectedSpacePersistence" class="infoLabel">&nbsp;</div>
+									</td>
+									<td>
+										<button id="setSpacePersistenceButton" class="excludesRoleMember">Change</button>
+										<div id="spacePersistencePopup" class="popup">
+											<div class="formLabel">Select a new persistence type:</div>
+											<select id="spacePersistenceTypeSelector">
+												<option value="OFF">Data is <b>not</b> persisted.</option>
+												<option value="ON">Data is persisted.</option>
+												<option value="DURATION">Data is persisted for a specific duration.</option>
+											</select>
+											<div id="spacePersistenceDurationForm">
+												<div class="sectionHeader">Select a duration:</div>
+												<table>
+													<tbody>
+														<tr>
+															<td>
+																<div class="formLabel">Years</div>
+																<input id="spacePersistenceYearsInput" type="number" min="0">
+															</td>
+															<td>
+																<div class="formLabel">Months</div>
+																<input id="spacePersistenceMonthsInput" type="number" min="0">
+															</td>
+															<td>
+																<div class="formLabel">Days</div>
+																<input id="spacePersistenceDaysInput" type="number" min="0">
+															</td>
+															<td>
+																<div class="formLabel">Hours</div>
+																<input id="spacePersistenceHoursInput" type="number" min="0">
+															</td>
+															<td>
+																<div class="formLabel">Minutes</div>
+																<input id="spacePersistenceMinutesInput" type="number" min="0">
+															</td>
+															<td>
+																<div class="formLabel">Seconds</div>
+																<input id="spacePersistenceSecondsInput" type="number" min="0">
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="buttonRow">
+												<button id="spacePersistenceInputCancelButton">Cancel</button>
+												<button id="spacePersistenceInputSubmitButton">Submit</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div id="spaceInformationTabMembers" class="excludesPrivateSpace">
+						<table id="spaceMembersTable">
+							<colgroup>
+								<col width="400px">
+								<col width="120px">
+								<col width="150px">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Role</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
+						<div class="excludesRoleMember">
+							<div class="sectionHeader">Add new member:</div>
+							<table class="inputFormTable">
+								<tbody>
+									<tr>
+										<td>
+											<div class="formLabel">User-ID</div>
+											<input type="text" id="newUserId" name="newUserId">											
+										</td>
+										<td>
+											<div class="formLabel">Domain</div>
+											<input type="text" id="newUserDomain" name="newUserDomain">
+										</td>
+										<td>
+											<div class="formLabel">Role</div>
+											<select id="newUserRole">
+												<option value="MEMBER" selected="selected">Member</option>
+												<option value="MODERATOR">Moderator</option>
+											</select>
+										</td>
+										<td>
+											<button id="newUserAddButton">Add</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div id="spaceInformationTabDataModels" class="excludesPrivateSpace excludesTeamSpace">
+						<table id="spaceDataModelsTable">
+							<colgroup>
+								<col width="200px">
+								<col width="360px">
+								<col width="60px">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>Namespace</th>
+									<th>Schema Location</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
+						<div id="noDataModelsSupportedInfo">No data models are supported yet.</div>
+						<div class="excludesRoleMember">
+							<div class="sectionHeader">Support additional data model:</div>
+							<table class="inputFormTable">
+								<tbody>
+									<tr>
+										<td>
+											<div class="formLabel">Namespace</div>
+											<input type="text" id="newModelNamespaceInput" name="newModelNamespace">											
+										</td>
+										<td>
+											<div class="formLabel">Schema Location</div>
+											<input type="text" id="newModelSchemaLocationInput" name="newModelSchemaLocation">
+										</td>
+										<td>
+											<button id="newModelAddButton">Add</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div id="spaceInformationTabData" class="excludesSpacePersistenceTypeOff">
+						<div id="dataObjectsList">
+							Initializing list of data objects ...
+						</div>
+						<div id="sendPing">
+							<div class="infoLabel">Click on "Send ping" to send a ping to the space.</div>
+							<button id="sendPingButton">Send ping</button>
+						</div>
+						<div id="dataObjectInfoPopup" class="popup">
+							<div class="panelHeader">Details</div>
+							<div class="formLabel">XML representation:</div>
+							<div id="dataObjectXMLView">&nbsp;</div>
+							<div class="buttonRow">
+								<button id="dataObjectInfoPopupCloseButton">Close</button>
+							</div>
+						</div>
+					</div>
+					<div id="spaceInformationTabOperations" class="excludesRoleMember">
+						<div class="infoLabel">Click here to permanently delete the space.</div>
+						<button id="deleteSpaceButton">Delete space</button>
+						<div id="deleteSpacePopup" class="popup">
+							<div class="infoLabel">
+								<div>Are you sure you want to delete the space?</div>
+								<p id="deleteSpaceNameInfo">&nbsp;</p>
+								<div class="warning">This operation cannot be undone!</div>
+							</div>
+							<div class="buttonRow">
+								<button id="deleteSpaceCancelButton">Cancel</button>
+								<button id="deleteSpaceSubmitButton">Submit</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="userProfilePanel" class="panel rightPanel">
+				<div class="panelHeader">Profile</div>
+				<div id="userProfileTab" class="tab">
+					<ul class="tab">
+						<li><a href="#MyProfile" class="current">My Profile</a></li>
+					</ul>
+					<div id="userProfileTabMyProfile">
+						<table>
+							<colgroup>
+								<col width="100%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td>
+										<div class="formLabel">User ID:</div>
+										<div id="profileUserId">&nbsp;</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="formLabel">Full Name:</div>
+										<div id="profileFullName">&nbsp;</div>
+									</td>
+									<td>
+										<button id="setProfileFullNameButton">Change</button>
+										<div id="profileFullNameInputPopup" class="popup">
+											<div class="formLabel">Set full name:</div>
+											<input type="text" id="profileFullNameInputField">
+											<div class="buttonRow">
+												<button id="profileFullNameInputCancelButton">Cancel</button>
+												<button id="profileFullNameInputSubmitButton">Submit</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr class="notImplemented">
+									<td>
+										<div class="formLabel">Organization:</div>
+										<div id="profileOrg">&nbsp;</div>
+									</td>
+									<td>
+										<button id="setProfileOrgButton">Change</button>
+										<div id="profileOrgInputPopup" class="popup">
+											<div class="formLabel">Set organization:</div>
+											<input type="text" id="profileOrgInputField">
+											<div class="buttonRow">
+												<button id="profileOrgInputCancelButton">Cancel</button>
+												<button id="profileOrgInputSubmitButton">Submit</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr class="notImplemented">
+									<td>
+										<div class="formLabel">Organizational Unit:</div>
+										<div id="profileOrgUnit">&nbsp;</div>
+									</td>
+									<td>
+										<button id="setProfileOrgUnitButton">Change</button>
+										<div id="profileOrgUnitInputPopup" class="popup">
+											<div class="formLabel">Set organizational unit:</div>
+											<input type="text" id="profileOrgUnitInputField">
+											<div class="buttonRow">
+												<button id="profileOrgUnitInputCancelButton">Cancel</button>
+												<button id="profileOrgUnitInputSubmitButton">Submit</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="formLabel">Password:</div>
+										<button id="changePasswordButton">Change password</button>
+										<div id="changePasswordInputPopup" class="popup">
+											<div class="formLabel">New password:</div>
+											<input type="password" id="changePasswordInputField">
+											<div class="formLabel">Repeat new password:</div>
+											<input type="password" id="changePasswordInputField2">
+											
+											<div class="buttonRow">
+												<button id="changePasswordInputCancelButton">Cancel</button>
+												<button id="changePasswordInputSubmitButton">Submit</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<div id="spaceCreationWizard" class="popup">
+		<div class="panelHeader">Create New Space</div>
+		<div id="spaceCreationErrorMessage">&nbsp;</div>
+		<div class="formLabel">Name</div>
+		<input id="spaceCreationNameInput" type="text">
+		<div class="formLabel">Type</div>
+		<input name="spaceCreationType" type="radio" value="TEAM" checked="checked">Team space.<br>
+		<input name="spaceCreationType" type="radio" value="ORGA">Organisational space.
+		<div class="formLabel">Persistence</div>
+		<select id="spaceCreationPersistenceTypeSelector">
+			<option value="OFF" selected="selected">Data is <b>not</b> persisted.</option>
+			<option value="ON">Data is persisted.</option>
+			<option value="DURATION">Data is persisted for a specific duration.</option>
+		</select>
+		<div id="spaceCreationPersistenceDurationForm">
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<div class="formLabel">Years</div>
+							<input id="spaceCreationPersistenceYearsInput" type="number" min="0">
+						</td>
+						<td>
+							<div class="formLabel">Months</div>
+							<input id="spaceCreationPersistenceMonthsInput" type="number" min="0">
+						</td>
+						<td>
+							<div class="formLabel">Days</div>
+							<input id="spaceCreationPersistenceDaysInput" type="number" min="0">
+						</td>
+						<td>
+							<div class="formLabel">Hours</div>
+							<input id="spaceCreationPersistenceHoursInput" type="number" min="0">
+						</td>
+						<td>
+							<div class="formLabel">Minutes</div>
+							<input id="spaceCreationPersistenceMinutesInput" type="number" min="0">
+						</td>
+						<td>
+							<div class="formLabel">Seconds</div>
+							<input id="spaceCreationPersistenceSecondsInput" type="number" min="0">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="buttonRow">
+			<button id="spaceCreationCancelButton">Cancel</button>
+			<button id="spaceCreationSubmitButton">Create Space</button>
+		</div>
+	</div>
+	<div id="activityIndicatorLayer" class="layer">
+	</div>
+	<script id="dataObjectTemplate" type="text/x-handlebars-tempalte">
+		<div class="dataObjectContainer" id="dataObject_{{id}}">
+			<div class="dataObjectElementInfo">
+				<div class="dataObjectElementName">{{elementName}}</div>
+				<div>{{namespace}}</div>
+			</div>
+			<div class="dataObjectPublishingInfo">
+				<div>{{publisher}}</div>
+				<div>{{timestamp}}</div>
+			</div>
+		</div>
+	</script>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="space-manager" default="build" basedir=".">
+
+	<description>
+		MIRROR Space Manager
+	</description>
+
+	<!-- load environment variables as properties -->
+	<property environment="env"/>
+
+	<!-- load properties files -->
+	<property file="build.properties"/>
+
+	<!-- default folder location properties -->
+	<property name="src.dir" value="src"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="build.dir" value="build"/>
+	<property name="libs.dir" value="lib" />
+
+	<target name="init">
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${dist.dir}/js"/>
+		<mkdir dir="${dist.dir}/images"/>
+	</target>
+
+	<target name="clean" description="Delete generated folders.">
+		<delete dir="${dist.dir}" failonerror="false" deleteonexit="true" />
+	</target>
+	
+	<target name="minify" depends="init" description="Compile project.">
+    	<apply executable="java" parallel="false">
+	        <fileset dir="." includes="${src.dir}/js/main.js"/>
+	        <arg line="-jar"/>
+	        <arg path="${build.dir}/yuicompressor-2.4.7.jar"/>
+	       	<arg line="--preserve-semi"/>
+	        <arg line="-o ${dist.dir}/js/main.min.js"/>
+	        <srcfile/>
+    	</apply>
+	</target>
+
+	<target name="js" depends="minify" description="Package project.">
+		<copy todir="${dist.dir}/js" overwrite="true">
+			<fileset dir="${libs.dir}" includes="**/*" excludes="" />
+		</copy>
+		<copy todir="${dist.dir}" overwrite="true">
+			<fileset dir="${src.dir}" includes="**/*" excludes="" />
+		</copy>
+	</target>
+	
+	<target name="build" depends="js" description="Build the project.">
+	</target>
+
+	<target name="rebuild" depends="clean, build" description="Rebuilds the project.">
+	</target>
+</project>
