@@ -21,6 +21,7 @@
 		<mkdir dir="${dist.dir}"/>
 		<mkdir dir="${dist.dir}/js"/>
 		<mkdir dir="${dist.dir}/images"/>
+		<mkdir dir="${dist.dir}/css"/>
 	</target>
 
 	<target name="clean" description="Delete generated folders.">

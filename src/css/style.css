@@ -1,0 +1,326 @@
+/* Colors used:
+ * #63859E headers, panel borders, background unselected tabs
+ * #D1D9DF body background, hover
+ * #DCE2DF panel & popup background
+ * #FDFEFE tab background, background selected tab, text unselected tabs
+ * 
+ * #ffdddd error background
+ * #ff0000 error text & borders
+ */
+
+div#body {
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.popup {
+	display: none;
+	background-color: #DCE2DF;
+	padding: 20px;
+	border-radius: 5px;
+	width: 400px;
+}
+
+div.popup > input[type=text] {
+	width: 100%;
+}
+
+div.buttonRow {
+	margin-top: 10px;
+	text-align: right;
+}
+
+body {
+	font-family: sans-serif;
+	font-size: 14px;
+	background-color: #D1D9DF;
+}
+
+h1 {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+h2 {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 2px 0px 5px 0px;
+}
+
+th {
+	text-align: left;
+}
+
+button {
+	font-size: 13px;
+	border: none;
+	border-radius: 3px;
+	color: #FDFEFE;
+	background-color: #63859E;
+	cursor: pointer;
+	padding: 2px 5px;
+	margin: 1px;
+}
+
+select {
+	height: 22px;
+}
+
+p {
+	text-indent: 20px;
+}
+
+div#header {
+	margin: 5px;
+	color: #63859E;
+	background-image: url('../images/logo-msf.png');
+	background-position: right;
+	background-repeat: no-repeat;
+	width: 960px;
+	height: 70px;
+	display: table-cell;
+	vertical-align: middle;
+	padding: 5px;
+}
+
+div#footer {
+	clear: both;
+}
+
+div.panel {
+	margin: 0px 5px 10px 5px;
+	border: 1px solid #63859E;
+	border-radius: 5px;
+	padding: 10px;
+	background-color: #DCE2DF;
+}
+
+div.leftPanel {
+	clear: left;
+	float: left;
+	width: 250px;
+}
+
+div.rightPanel {
+	margin-left: 285px;
+}
+
+div.panelHeader {
+	font-size: 12px;
+	margin: -5px 0px 5px 0px;
+	text-align: center;
+	font-weight: bold;
+	color: #63859E;
+}
+
+div.formLabel {
+	font-size: 11px;
+	font-weight: bold;
+	color: #63859E;
+	margin-top: 10px;
+}
+
+div.infoLabel {
+	margin: 5px;
+}
+
+div.sectionHeader {
+	font-size: 14px;
+	font-weight: bold;
+	color: #63859E;
+	margin-top: 10px;
+}
+
+
+div.errorMessage {
+	color: red;
+	border-color: red;
+	background-color: #ffdddd;
+	display: none;
+}
+
+div.successMessage {
+	color: green;
+	border-color: green;
+	background-color: #ddffdd;
+	display: none;
+}
+
+#spaceCreationErrorMessage {
+	color: red;
+	border: red solid 1px;
+	background-color: #ffdddd;
+	font-size: 12px;
+	margin-top: 10px;
+	padding: 5px;
+	display: none;
+}
+
+/* Tabs */
+
+div .tab ul {
+	list-style: none;
+	padding-left: 0px;
+	margin-bottom: 7px;
+}
+
+div .tab ul li {
+	display: inline;
+	width: 100px;
+}
+
+div .tab ul li a {
+	padding: 7px 15px;
+	background-color: #63859E;
+	color: #FDFEFE;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	text-align: center;
+	text-decoration: none;
+}
+
+div .tab ul li a:hover {
+	background-color: #D1D9DF;
+}
+
+div .tab ul li .current {
+	background-color: #FDFEFE;
+	color: black;
+}
+
+div .tab > div {
+	background-color: #FDFEFE;
+	padding: 5px;
+}
+
+#changePasswordInputPopup input {
+	width: 100%;
+}
+
+#spacePersistenceDurationForm input[type=number] {
+	width: 40px;
+	height: 20px;
+	margin-right: 10px;
+}
+
+#spaceCreationPersistenceDurationForm input[type=number] {
+	width: 40px;
+	height: 20px;
+	margin-right: 10px;
+}
+
+#spaceSelectionDropdown {
+	width: 100%;
+}
+
+#spaceMembersTable button {
+	font-size: 11px;
+}
+
+#spaceDataModelsTable td {
+	font-size: 12px;
+}
+
+#spaceDataModelsTable button {
+	font-size: 11px;
+}
+
+.inputFormTable td {
+	vertical-align: bottom;
+}
+
+#newModelNamespaceInput {
+	width: 200px;
+}
+
+#newModelSchemaLocationInput {
+	width: 370px;
+}
+
+#noDataModelsSupportedInfo {
+	font-style: italic;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.dataModelUrl {
+	text-decoration: none;
+}
+
+.dataModelUrl:link {
+	text-decoration: none;
+	color: #63859E;
+}
+
+.dataModelUrl:visited {
+	text-decoration: none;
+	color: #63859E;
+}
+
+.layer {
+	position: fixed;
+	background-color: black;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	opacity: 0.2;
+}
+
+.dataObjectContainer {
+	background-color: #DCE2DF;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin: 5px;
+	cursor: pointer;
+	font-size: 12px;
+}
+
+.dataObjectContainer > div {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.dataObjectElementInfo {
+	width: 350px;
+}
+
+.dataObjectElementName {
+	font-weight: bold;
+}
+
+#activityIndicatorLayer {
+	display: none;
+}
+
+#dataObjectInfoPopup {
+	width: 800px;
+}
+
+#dataObjectXMLView {
+	overflow: auto;
+	font-size: 12px;
+	font-family: monospace;
+	margin: 5px 0px;
+	padding: 5px;
+	border: solid 1px #63859E;
+}
+
+#dataObjectsList {
+	max-height: 495px;
+	overflow: auto;
+}
+
+.notImplemented {
+	display: none;
+}
+
+.warning {
+	color: #FF0000;
+}
+
+#deleteSpaceNameInfo {
+	font-weight: bold;
+}
