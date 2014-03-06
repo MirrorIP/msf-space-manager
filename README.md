@@ -1,5 +1,5 @@
-# MSF Account Manager
-The MSF Space Manager is a tool to manage spaces in the [MIRROR Spaces Framework][1]. It is a web application using the XMPP protocol to perform all operations.
+# MIRROR Space Manager
+The MIRROR Space Manager is a tool to manage spaces in the [MIRROR Spaces Framework][1]. It is a web application using the XMPP protocol to perform all operations.
 
 ## Build
 To build the application an build script for [Apache Ant][2] is provided.
