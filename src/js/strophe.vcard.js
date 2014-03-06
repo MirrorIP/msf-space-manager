@@ -26,11 +26,13 @@ buildIq = function(type, jid, vCardEl) {
   } : {
     type: type
   });
-  iq.c("vCard", {
-    xmlns: Strophe.NS.VCARD
-  });
+  // MODIFIED
   if (vCardEl) {
     iq.cnode(vCardEl);
+  } else {
+  	iq.c("vCard", {
+      xmlns: Strophe.NS.VCARD
+    });
   }
   return iq;
 };
