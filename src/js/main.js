@@ -1013,6 +1013,7 @@ var SpaceManager = (function ($) {
 		data.elementName = dataObject.getElementName();
 		data.namespace= dataObject.getNamespaceURI();
 		data.xmlString = dataObject.toString();
+		data.object = dataObject;
 		var timestamp = dataObject.getElement().getAttribute('timestamp');
 		if (timestamp) data.timestamp = timestamp;
 		var publisher = dataObject.getElement().getAttribute('publisher');
@@ -1022,10 +1023,25 @@ var SpaceManager = (function ($) {
 			data.publisher = userId + ' (' + application + ')';
 		}
 		$('#dataObjectsList').prepend(templates.dataObject(data));
-		$('#dataObject_' + data.id).bind('click', {dataObject : data}, function(event) {
-			var xml = event.data.dataObject.xmlString;
-			$('#dataObjectXMLView').text(xml);
-			$('#dataObjectInfoPopup').bPopup(bPopupOptions);
+		$('#dataObject_' + data.id).bind('click', {data : data}, function(event) {
+			var data = event.data.data;
+			var template = dataModelTemplates[data.namespace]; 
+			if (template) {
+				template.apply(data.object, function(content) {
+					$('#dataObjectContent').html(content);
+					$('#dataObjectXMLView').text(event.data.data.xmlString);
+					$('#dataObjectInfoPopup').bPopup(bPopupOptions);
+				}, function(error) {
+					console.warn('Failed to render data object ' + data.namespace + ': ' + error);
+					$('#dataObjectContent').empty();
+					$('#dataObjectXMLView').text(event.data.data.xmlString);
+					$('#dataObjectInfoPopup').bPopup(bPopupOptions);
+				});
+			} else {
+				$('#dataObjectContent').empty();
+				$('#dataObjectXMLView').text(event.data.data.xmlString);
+				$('#dataObjectInfoPopup').bPopup(bPopupOptions);
+			}
 		});
 	}
 	

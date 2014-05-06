@@ -1,0 +1,32 @@
+<table>
+<tbody>
+	<tr>
+		<td>
+			<div class="formLabel">Title</div>
+			<div class="infoLabel"><b>{{title}}</b></div>
+		</td>
+		<td>
+			<div class="formLabel">Recommendation ID</div>
+			<div class="infoLabel">{{customId}}</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="formLabel">Created</div>
+			<div class="infoLabel">{{creationInfo.date}} by {{creationInfo.person}}</div>
+		</td>
+	<tr>
+	</tr>
+		<td>
+			<div class="formLabel">Issue</div>
+			<div class="infoLabel">{{issue}}</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="formLabel">Recommended Solution</div>
+			<div class="infoLabel">{{solution}}</div>
+		</td>
+	</tr>
+</tbody>
+</table>

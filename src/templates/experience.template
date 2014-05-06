@@ -1,0 +1,8 @@
+<div class="formLabel">Related Recommendation</div>
+<div class="infoLabel">{{ref}}</div>
+<div class="formLabel">Created</div>
+<div class="infoLabel">{{creationInfo.date}} by {{creationInfo.person}}</div>
+<div class="formLabel">Rating</div>
+<div class="infoLabel">{{rating}} of 5</div>
+<div class="formLabel">Comment</div>
+<div class="infoLabel">{{comment}}</div>

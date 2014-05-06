@@ -299,13 +299,14 @@ div .tab > div {
 	width: 800px;
 }
 
-#dataObjectXMLView {
+.dataObjectXMLView {
 	overflow: auto;
 	font-size: 12px;
 	font-family: monospace;
 	margin: 5px 0px;
 	padding: 5px;
 	border: solid 1px #63859E;
+	max-height: 200px;
 }
 
 #dataObjectsList {
